@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 export const Home = () => (
 	<div className="text-center mt-5">
-		<Link to="/contact">Go to Contact List</Link>
+		<h1 className="display-1 fw-bold">4geeks Diego Gómez contact list</h1>
+		<Link className="display-5" to="/contact">Go to Contact List</Link>
 	</div>
 );

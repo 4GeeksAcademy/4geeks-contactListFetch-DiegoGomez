@@ -84,7 +84,6 @@ const getState = ({ getStore, getActions, setStore }) => {
               method: "DELETE",
             }
           );
-          // Assuming successful deletion, fetch contacts again
           actions.fetchContacts();
         } catch (error) {
           console.error("Error deleting contact:", error);

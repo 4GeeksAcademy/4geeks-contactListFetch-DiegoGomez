@@ -2,7 +2,6 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 
 export const Contact = () => {
   // Variables de estado y funciones de store
@@ -22,52 +21,61 @@ export const Contact = () => {
   const handleUpdateContact = (contactId) => {
     return <Link to={`/addContact/${contactId}`}>Actualizar</Link>;
   };
+
+  const ulStyle = {
+    listStyleType: "none", // This removes the bullets
+  };
   return (
     //Mis contactos
     <div className="p-4">
       <h1 className="display-6 fw-bold">Contact List</h1>
 
       <Link to="/addContact" className="btn btn-primary">
-        Añadir contacto
+        Add contact
       </Link>
-      <ul>
+      <Link to="/" className="btn btn-success ms-3">
+        Home
+      </Link>
+      <div className="row row-cols-1 row-cols-md-2 g-4" style={ulStyle}>
         {store.contacts.map(
           (contact) =>
             contact.id && (
-              <li key={contact.id} className="p-5 border border-1 mt-3 rounded">
-                <h2 className="display-3">{contact.full_name}</h2>{" "}
-                <h5>
-                  <i class="fa-solid fa-location-dot me-2"></i>
-                  {contact.address}
-                </h5>
-                <h5>
-                  <i class="fa-solid fa-phone me-2"></i>
-                  {contact.phone}
-                </h5>
-                <h5>
-                  <i class="fa-solid fa-envelope me-2"></i>
-                  {contact.email}
-                </h5>
-                <div className="mt-3">
-                  <button
-                    type="button"
-                    className="btn btn-warning me-2"
-                    onClick={() => handleUpdateContact(contact.id)}
-                  >
-                    Actualizar
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={() => handleDeleteContact(contact.id)}
-                  >
-                    Eliminar
-                  </button>
+              <div key={contact.id} className="col">
+                <div className="p-5 border border-1 mt-3 rounded bg-dark text-white">
+                  <h2 className="display-3">{contact.full_name}</h2>
+                  <h5>
+                    <i className="fa-solid fa-location-dot me-2"></i>
+                    {contact.address}
+                  </h5>
+                  <h5>
+                    <i className="fa-solid fa-phone me-2"></i>
+                    {contact.phone}
+                  </h5>
+                  <h5>
+                    <i className="fa-solid fa-envelope me-2"></i>
+                    {contact.email}
+                  </h5>
+                  <div className="mt-3">
+                    <button
+                      type="button"
+                      className="btn btn-warning me-2"
+                      onClick={() => handleUpdateContact(contact.id)}
+                    >
+                      <i className="fa-solid fa-pen"></i>
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => handleDeleteContact(contact.id)}
+                    >
+                      <i className="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
                 </div>
-              </li>
+              </div>
             )
         )}
-      </ul>
+      </div>
     </div>
   );
 };

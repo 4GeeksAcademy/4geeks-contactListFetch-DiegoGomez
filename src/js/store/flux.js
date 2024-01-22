@@ -90,8 +90,8 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-		// Para actualizar los contactos, contactId es el id del contacto que quiero actualizar y contactData
-		//es un objeto con los campos del contacto
+      // Para actualizar los contactos, contactId es el id del contacto que quiero actualizar y contactData
+      //es un objeto con los campos del contacto
       updateContact: async (contactId, contactData) => {
         try {
           const response = await fetch(
@@ -104,7 +104,13 @@ const getState = ({ getStore, getActions, setStore }) => {
               body: JSON.stringify(contactData),
             }
           );
-          actions.fetchContacts();
+          // Si la respuesta es correcta, actualizo los contactos
+          if (response.ok) {
+            // Si la respuesta es correcta, actualizo los contactos
+            getActions().fetchContacts();
+          } else {
+            console.error("Error updating contact:", response.status);
+          }
         } catch (error) {
           console.error("Error updating contact:", error);
         }

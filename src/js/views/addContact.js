@@ -1,13 +1,20 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate, useParams} from "react-router-dom";
 import { Link } from "react-router-dom";
 
-export const AddContact = () => {
-  const { actions } = useContext(Context);
-  const navigate = useNavigate(); // Use useNavigate hook
+// Los parametros que estan en la URL se pueden acceder desde el componente usando el hook useParams
+// los estoy pasando desde el componente ContactCard
+export const AddContact = ({ params }) => {
+  // Este console log muestra si los parametros llegaron al componente
+  console.log("Parámetros de llegada:", params);
 
-  //Estados para el formulario de contacto
+  const { actions, store } = useContext(Context);
+  const navigate = useNavigate();
+  const { contactId } = useParams();
+
+
+  // El estado inicial del formulario es un objeto vacío con los campos del formulario
   const [contactData, setContactData] = useState({
     full_name: "",
     email: "",
@@ -16,32 +23,46 @@ export const AddContact = () => {
     phone: "",
   });
 
-  // Con handleChange actualizo el estado de contactData con los valores de los inputs
+  useEffect(() => {
+    if (contactId) {
+      const selectedContact = store.contacts.find((contact) => contact.id === contactId);
+      if (selectedContact) {
+        setContactData({
+          ...selectedContact,
+          agenda_slug: "agenda-diego",
+        });
+      }
+    }
+  }, [contactId, store.contacts]);
+
+  // Cada vez que hay un cambio en los campos del formulario, se actualiza el estado del formulario
   const handleChange = (e) => {
+    // target.name y target.value son propiedades de los inputs que me permiten acceder al nombre y al valor del input
     setContactData({ ...contactData, [e.target.name]: e.target.value });
   };
 
-  //En la funcion handleSubmit hago el fetch para crear un nuevo contacto
   const handleSubmit = (e) => {
-    // PreventDefault me sirve para que no se recargue la pagina al hacer submit
+    // Evito que se recargue la página
     e.preventDefault();
 
-    // Si el contacto ya existe, actualizo el contacto, sino lo creo
+    // Si hay un id en el contacto, llamo al método updateContact de actions pasando el id del contacto y los datos del contacto
     if (contactData.id) {
       actions.updateContact(contactData.id, contactData);
     } else {
       actions.createContact(contactData);
     }
 
-    // Cuando termino de crear o actualizar el contacto, navego a la pagina de contactos
+    // Al enviar el formulario, me voy a la página de contactos
     navigate("/contact");
   };
 
   return (
     <div className="p-3">
-      <h1 className="display-5">{contactData.id ? "Edit Contact" : "Add a new contact"}</h1>
+      <h1 className="display-5">
+        {contactData.id ? "Edit Contact" : "Add a new contact"}
+      </h1>
       <form className="p-5" onSubmit={handleSubmit}>
-        <label for="fullName" class="form-label">
+        <label htmlFor="fullName" className="form-label">
           Full name
         </label>
         <input
@@ -53,7 +74,7 @@ export const AddContact = () => {
           onChange={handleChange}
           required
         />
-        <label for="email" class="form-label">
+        <label htmlFor="email" className="form-label">
           Email
         </label>
         <input
@@ -65,7 +86,7 @@ export const AddContact = () => {
           onChange={handleChange}
           required
         />
-        <label for="address" class="form-label">
+        <label htmlFor="address" className="form-label">
           Address
         </label>
         <input
@@ -77,7 +98,7 @@ export const AddContact = () => {
           onChange={handleChange}
           required
         />
-        <label for="phone" class="form-label">
+        <label htmlFor="phone" className="form-label">
           Phone
         </label>
         <input
@@ -90,8 +111,8 @@ export const AddContact = () => {
           required
         />
 
-        <div class="d-grid gap-2">
-          <button class="btn btn-primary mt-3" type="submit">
+        <div className="d-grid gap-2">
+          <button className="btn btn-primary mt-3" type="submit">
             {contactData.id ? "Update Contact" : "Add Contact"}
           </button>
         </div>

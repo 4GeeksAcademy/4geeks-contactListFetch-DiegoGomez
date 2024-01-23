@@ -1,8 +1,10 @@
 // ContactCard.js
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 const ContactCard = ({ contact, onDeleteContact }) => {
+  const { actions } = useContext(Context);
   return (
     <div className="col">
       <div className="p-5 border border-1 mt-3 rounded bg-dark text-white">
@@ -20,7 +22,13 @@ const ContactCard = ({ contact, onDeleteContact }) => {
           {contact.email}
         </h5>
         <div className="mt-3">
-          <Link to={`/addContact/${contact.id}`} className="btn btn-warning me-2">
+          <Link
+            to={`/updateContact`}
+            className="btn btn-warning me-2"
+            onClick={() => {
+              actions.seeContact(contact);
+            }}
+          >
             <i className="fa-solid fa-pen"></i>
           </Link>
           <button

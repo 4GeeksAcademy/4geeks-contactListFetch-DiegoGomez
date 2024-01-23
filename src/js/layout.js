@@ -9,7 +9,7 @@ import injectContext from "./store/appContext";
 
 import Contact from "./views/contact";
 import { AddContact } from "./views/addContact";
-
+import { UpdateContact } from "./views/updateContact";
 const Layout = () => {
   const basename = process.env.BASENAME || "";
 
@@ -21,7 +21,7 @@ const Layout = () => {
             <Route path="/" element={<Home />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/addContact" element={<AddContact />} />
-            <Route path="/addContact/:contactId" element={<AddContact />} />
+            <Route path="/updateContact" element={<UpdateContact />} />
             <Route path="/demo" element={<Demo />} />
             <Route path="/single/:theid" element={<Single />} />
             <Route path="*" element={<h1>Not found!</h1>} />

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 // Los parametros que estan en la URL se pueden acceder desde el componente usando el hook useParams
@@ -13,7 +13,6 @@ export const AddContact = ({ params }) => {
   const navigate = useNavigate();
   const { contactId } = useParams();
 
-
   // El estado inicial del formulario es un objeto vacío con los campos del formulario
   const [contactData, setContactData] = useState({
     full_name: "",
@@ -23,11 +22,16 @@ export const AddContact = ({ params }) => {
     phone: "",
   });
 
+  //Si hay un id en el contacto, se ejecuta el useEffect y se actualiza el estado del formulario
   useEffect(() => {
     if (contactId) {
-      const selectedContact = store.contacts.find((contact) => contact.id === contactId);
+      const selectedContact = store.contacts.find(
+        (contact) => contact.id === contactId
+      );
+      // El contacto seleccionado se guarda en el estado del formulario
       if (selectedContact) {
         setContactData({
+          // El spread operator me permite replicar el contacto seleccionado y añadirle el campo agenda_slug
           ...selectedContact,
           agenda_slug: "agenda-diego",
         });
@@ -57,11 +61,9 @@ export const AddContact = ({ params }) => {
   };
 
   return (
-    <div className="p-3">
-      <h1 className="display-5">
-        {contactData.id ? "Edit Contact" : "Add a new contact"}
-      </h1>
-      <form className="p-5" onSubmit={handleSubmit}>
+    <div className="p-3 container">
+      <form onSubmit={handleSubmit}>
+        <h1 className="display-5 mb-4">Add a new contact</h1>
         <label htmlFor="fullName" className="form-label">
           Full name
         </label>
@@ -110,15 +112,15 @@ export const AddContact = ({ params }) => {
           onChange={handleChange}
           required
         />
-
-        <div className="d-grid gap-2">
-          <button className="btn btn-primary mt-3" type="submit">
-            {contactData.id ? "Update Contact" : "Add Contact"}
+        <div>
+          <button className="btn btn-info btn-lg mt-3" type="submit">
+            Create contact
           </button>
+
+          <Link to="/contact" className="btn btn-secondary btn-lg mt-3 ms-4">
+            Go back
+          </Link>
         </div>
-        <Link to="/contact" className="btn btn-secondary btn-lg mt-3">
-          Go back
-        </Link>
       </form>
     </div>
   );

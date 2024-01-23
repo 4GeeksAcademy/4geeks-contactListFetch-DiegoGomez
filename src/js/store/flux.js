@@ -14,6 +14,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         },
       ],
       contacts: [],
+      contact: {}
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -115,6 +116,11 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.error("Error updating contact:", error);
         }
       },
+      //Este action lo llamo desde el botón de actualizar el contacto, guarda los contactos en el store
+      //lo cual me sirve para poder manipularlos con el fetch que hago en el archivo updateContact
+      seeContact: (contact) => {
+        setStore ({contact:contact})
+      }
     },
   };
 };
